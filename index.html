@@ -1,0 +1,60 @@
+import 'dart:math';
+
+class MathUtils {
+  // Faktorial
+  static int factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+  }
+
+  // Cek Bilangan Prima
+  static bool isPrima(int n) {
+    if (n < 2) return false;
+    for (int i = 2; i <= sqrt(n); i++) {
+      if (n % i == 0) return false;
+    }
+    return true;
+  }
+
+  // Bulatkan ke desimal tertentu
+  static double roundTo(double value, int places) {
+    double mod = pow(10.0, places).toDouble();
+    return ((value * mod).round().toDouble() / mod);
+  }
+
+  // Angka acak dalam range [min, max]
+  static num randomRange(num min, num max) {
+    var rnd = Random();
+    if (min is int && max is int) {
+      return min + rnd.nextInt(max - min + 1);
+    } else {
+      return min + rnd.nextDouble() * (max - min);
+    }
+  }
+
+  // Rata-rata dari List
+  static double hitungRataRata(List<num> angka) {
+    if (angka.isEmpty) return 0;
+    return angka.reduce((a, b) => a + b) / angka.length;
+  }
+
+  // Median dari List
+  static double hitungMedian(List<num> angka) {
+    if (angka.isEmpty) return 0;
+    var sorted = List<num>.from(angka)..sort();
+    int middle = sorted.length ~/ 2;
+    if (sorted.length % 2 == 1) {
+      return sorted[middle].toDouble();
+    } else {
+      return (sorted[middle - 1] + sorted[middle]) / 2.0;
+    }
+  }
+}
+
+// Cara menjalankan Soal 5:
+void main() {
+  print("Faktorial 5: ${MathUtils.factorial(5)}");
+  print("Apakah 17 prima? ${MathUtils.isPrima(17)}");
+  print("Rata-rata [1,2,3,4,5]: ${MathUtils.hitungRataRata([1,2,3,4,5])}");
+  mainPolimorfisme(); // Memanggil demo soal 1-3
+}
