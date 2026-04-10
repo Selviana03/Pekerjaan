@@ -1,13 +1,64 @@
+/**
+ * TUGAS PEMROGRAMAN BERORIENTASI OBJEK
+ * ----------------------------------
+ * Nama : Serlin Selviana Giay
+ * NIM  : 251410030
+ * Topik: Polimorfisme, Abstraksi, & Static Methods
+ */
+
 import 'dart:math';
 
-class MathUtils {
-  // Faktorial
-  static int factorial(int n) {
-    if (n <= 1) return 1;
-    return n * factorial(n - 1);
-  }
+// 1. Abstract Class (Abstraksi)
+abstract class Pekerja {
+  String nama;
+  Pekerja(this.nama);
 
-  // Cek Bilangan Prima
+  // Method Abstract: Wajib diimplementasikan oleh subclass
+  void bekerja(); 
+
+  // Method Non-Abstract
+  void identitas() {
+    print("Karyawan: $nama | Pengawas: Serlin Selviana Giay");
+  }
+}
+
+// 2. Implementasi Class (Inheritance & Overriding)
+class Programmer extends Pekerja {
+  Programmer(String nama) : super(nama);
+  @override
+  void bekerja() => print("$nama sedang mengembangkan sistem perbankan.");
+}
+
+class Dokter extends Pekerja {
+  Dokter(String nama) : super(nama);
+  @override
+  void bekerja() => print("$nama sedang memberikan layanan kesehatan.");
+}
+
+class Guru extends Pekerja {
+  Guru(String nama) : super(nama);
+  @override
+  void bekerja() => print("$nama sedang memberikan pelatihan teknis.");
+}
+
+// 4. Multiple Interface Simulation (Tablet)
+class Komputer { void proses() => print("Memproses data..."); }
+class Kamera { void foto() => print("Mengambil foto..."); }
+class Telepon { void call() => print("Menghubungi nasabah..."); }
+
+class Tablet implements Komputer, Kamera, Telepon {
+  @override
+  void proses() => print("Tablet NIM 251410030: Memproses data.");
+  @override
+  void foto() => print("Tablet NIM 251410030: Foto dokumen.");
+  @override
+  void call() => print("Tablet NIM 251410030: Telepon support.");
+}
+
+// 5. MathUtils (Static Methods)
+class MathUtils {
+  static int factorial(int n) => (n <= 1) ? 1 : n * factorial(n - 1);
+
   static bool isPrima(int n) {
     if (n < 2) return false;
     for (int i = 2; i <= sqrt(n); i++) {
@@ -16,45 +67,34 @@ class MathUtils {
     return true;
   }
 
-  // Bulatkan ke desimal tertentu
-  static double roundTo(double value, int places) {
-    double mod = pow(10.0, places).toDouble();
-    return ((value * mod).round().toDouble() / mod);
-  }
-
-  // Angka acak dalam range [min, max]
-  static num randomRange(num min, num max) {
-    var rnd = Random();
-    if (min is int && max is int) {
-      return min + rnd.nextInt(max - min + 1);
-    } else {
-      return min + rnd.nextDouble() * (max - min);
-    }
-  }
-
-  // Rata-rata dari List
   static double hitungRataRata(List<num> angka) {
-    if (angka.isEmpty) return 0;
-    return angka.reduce((a, b) => a + b) / angka.length;
-  }
-
-  // Median dari List
-  static double hitungMedian(List<num> angka) {
-    if (angka.isEmpty) return 0;
-    var sorted = List<num>.from(angka)..sort();
-    int middle = sorted.length ~/ 2;
-    if (sorted.length % 2 == 1) {
-      return sorted[middle].toDouble();
-    } else {
-      return (sorted[middle - 1] + sorted[middle]) / 2.0;
-    }
+    return angka.isEmpty ? 0 : angka.reduce((a, b) => a + b) / angka.length;
   }
 }
 
-// Cara menjalankan Soal 5:
+// --- MAIN FUNCTION ---
 void main() {
-  print("Faktorial 5: ${MathUtils.factorial(5)}");
-  print("Apakah 17 prima? ${MathUtils.isPrima(17)}");
-  print("Rata-rata [1,2,3,4,5]: ${MathUtils.hitungRataRata([1,2,3,4,5])}");
-  mainPolimorfisme(); // Memanggil demo soal 1-3
+  print("========================================");
+  print("NAMA : SERLIN SELVIANA GIAY");
+  print("NIM  : 251410030");
+  print("========================================\n");
+
+  // 3. Demonstrasi Polimorfisme
+  List<Pekerja> daftar = [
+    Programmer("Budi"),
+    Dokter("Siti"),
+    Guru("Andi")
+  ];
+
+  print("-- Output Polimorfisme --");
+  for (var p in daftar) {
+    p.identitas();
+    p.bekerja();
+    print("--------------------");
+  }
+
+  print("\n-- Output MathUtils (Static) --");
+  print("Faktorial dari 5: ${MathUtils.factorial(5)}");
+  print("Apakah 23 Bilangan Prima? ${MathUtils.isPrima(23)}");
+  print("Rata-rata Nilai: ${MathUtils.hitungRataRata([80, 90, 75, 100])}");
 }
