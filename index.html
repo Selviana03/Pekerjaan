@@ -1,100 +1,128 @@
-/**
- * TUGAS PEMROGRAMAN BERORIENTASI OBJEK
- * ----------------------------------
- * Nama : Serlin Selviana Giay
- * NIM  : 251410030
- * Topik: Polimorfisme, Abstraksi, & Static Methods
- */
+import java.util.*;
 
-import 'dart:math';
-
-// 1. Abstract Class (Abstraksi)
-abstract class Pekerja {
-  String nama;
-  Pekerja(this.nama);
-
-  // Method Abstract: Wajib diimplementasikan oleh subclass
-  void bekerja(); 
-
-  // Method Non-Abstract
-  void identitas() {
-    print("Karyawan: $nama | Pengawas: Serlin Selviana Giay");
-  }
+// 1. Interface Pekerja
+interface Pekerja {
+    void bekerja();
 }
 
-// 2. Implementasi Class (Inheritance & Overriding)
-class Programmer extends Pekerja {
-  Programmer(String nama) : super(nama);
-  @override
-  void bekerja() => print("$nama sedang mengembangkan sistem perbankan.");
+// 2. Class Implementasi
+class Programmer implements Pekerja {
+    @Override
+    public void bekerja() {
+        System.out.println("Programmer sedang menulis kode dan memperbaiki bug.");
+    }
 }
 
-class Dokter extends Pekerja {
-  Dokter(String nama) : super(nama);
-  @override
-  void bekerja() => print("$nama sedang memberikan layanan kesehatan.");
+class Dokter implements Pekerja {
+    @Override
+    public void bekerja() {
+        System.out.println("Dokter sedang memeriksa pasien.");
+    }
 }
 
-class Guru extends Pekerja {
-  Guru(String nama) : super(nama);
-  @override
-  void bekerja() => print("$nama sedang memberikan pelatihan teknis.");
+class Guru implements Pekerja {
+    @Override
+    public void bekerja() {
+        System.out.println("Guru sedang mengajar di kelas.");
+    }
 }
 
-// 4. Multiple Interface Simulation (Tablet)
-class Komputer { void proses() => print("Memproses data..."); }
-class Kamera { void foto() => print("Mengambil foto..."); }
-class Telepon { void call() => print("Menghubungi nasabah..."); }
+// 4. Simulasi Pewarisan Jamak untuk "Tablet"
+interface Komputer { void prosesData(); }
+interface Kamera { void ambilFoto(); }
+interface Telepon { void telepon(); }
 
 class Tablet implements Komputer, Kamera, Telepon {
-  @override
-  void proses() => print("Tablet NIM 251410030: Memproses data.");
-  @override
-  void foto() => print("Tablet NIM 251410030: Foto dokumen.");
-  @override
-  void call() => print("Tablet NIM 251410030: Telepon support.");
+    public void prosesData() { System.out.println("Tablet memproses data..."); }
+    public void ambilFoto() { System.out.println("Tablet mengambil foto..."); }
+    public void telepon() { System.out.println("Tablet melakukan panggilan..."); }
 }
 
-// 5. MathUtils (Static Methods)
-class MathUtils {
-  static int factorial(int n) => (n <= 1) ? 1 : n * factorial(n - 1);
+public class MainLatihan {
+    public static void main(String[] args) {
+        // 3. List<Pekerja> dan Demonstrasi Polimorfisme
+        List<Pekerja> daftarPekerja = new ArrayList<>();
+        daftarPekerja.add(new Programmer());
+        daftarPekerja.add(new Dokter());
+        daftarPekerja.add(new Guru());
 
-  static bool isPrima(int n) {
-    if (n < 2) return false;
-    for (int i = 2; i <= sqrt(n); i++) {
-      if (n % i == 0) return false;
+        System.out.println("=== Demonstrasi Polimorfisme ===");
+        for (Pekerja p : daftarPekerja) {
+            p. bekerja(); // Memanggil method yang sama, hasil berbeda (Polimorfisme)
+        }
     }
-    return true;
-  }
+}
+class MathUtils {
+    // Factorial
+    public static long factorial(int n) {
+        if (n <= 1) return 1;
+        return n * factorial(n - 1);
+    }
 
-  static double hitungRataRata(List<num> angka) {
-    return angka.isEmpty ? 0 : angka.reduce((a, b) => a + b) / angka.length;
-  }
+    // Cek Bilangan Prima
+    public static boolean isPrima(int n) {
+        if (n <= 1) return false;
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+
+    // Membulatkan double ke desimal tertentu
+    public static double bulat(double nilai, int skala) {
+        double pow = Math.pow(10, skala);
+        return Math.round(nilai * pow) / pow;
+    }
+
+    // Acak integer dalam range [min, max]
+    public static int acakInt(int min, int max) {
+        return (int)(Math.random() * (max - min + 1)) + min;
+    }
+
+    // Menghitung Rata-rata dari List
+    public static double hitungRata(List<Double> angka) {
+        double total = 0;
+        for (double d : angka) total += d;
+        return total / angka.size();
+    }
+
+    // Menghitung Median
+    public static double hitungMedian(List<Double> angka) {
+        Collections.sort(angka);
+        int n = angka.size();
+        if (n % 2 == 0) return (angka.get(n/2-1) + angka.get(n/2)) / 2.0;
+        return angka.get(n/2);
+    }
+}
+// Interface
+interface Playable { void play(); }
+interface Pausable { void pause(); }
+
+// Abstract Class
+abstract class MediaPlayer {
+    String namaFile;
+    abstract void stop();
 }
 
-// --- MAIN FUNCTION ---
-void main() {
-  print("========================================");
-  print("NAMA : SERLIN SELVIANA GIAY");
-  print("NIM  : 251410030");
-  print("========================================\n");
+// Class Implementasi
+class AudioPlayer extends MediaPlayer implements Playable, Pausable {
+    @Override
+    public void play() { System.out.println("Memutar musik..."); }
+    
+    @Override
+    public void pause() { System.out.println("Musik dihentikan sejenak."); }
+    
+    @Override
+    void stop() { System.out.println("Menghentikan musik."); }
+}
 
-  // 3. Demonstrasi Polimorfisme
-  List<Pekerja> daftar = [
-    Programmer("Budi"),
-    Dokter("Siti"),
-    Guru("Andi")
-  ];
-
-  print("-- Output Polimorfisme --");
-  for (var p in daftar) {
-    p.identitas();
-    p.bekerja();
-    print("--------------------");
-  }
-
-  print("\n-- Output MathUtils (Static) --");
-  print("Faktorial dari 5: ${MathUtils.factorial(5)}");
-  print("Apakah 23 Bilangan Prima? ${MathUtils.isPrima(23)}");
-  print("Rata-rata Nilai: ${MathUtils.hitungRataRata([80, 90, 75, 100])}");
+class VideoPlayer extends MediaPlayer implements Playable, Pausable {
+    @Override
+    public void play() { System.out.println("Memutar video HD..."); }
+    
+    @Override
+    public void pause() { System.out.println("Video dihentikan sejenak."); }
+    
+    @Override
+    void stop() { System.out.println("Menghentikan video."); }
 }
